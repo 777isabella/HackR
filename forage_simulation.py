@@ -344,10 +344,35 @@ if __name__ == "__main__":
         improved_results.append(i)
         print(f"Trial {t+1}: baseline last20={b}, improved last20={i}")
 
-    # Print average results
+    # ------------------------------------------------------------
+    # Summary over all trials
+    # ------------------------------------------------------------
     print("\nSummary over trials:")
-    print(f"Baseline avg time to collect last 20%: {np.mean(baseline_results):.2f}")
-    print(f"Improved avg time to collect last 20%: {np.mean(improved_results):.2f}")
+    baseline_avg = np.mean(baseline_results)
+    improved_avg = np.mean(improved_results)
+    print(f"Baseline avg time to collect last 20%: {baseline_avg:.2f}")
+    print(f"Improved avg time to collect last 20%: {improved_avg:.2f}")
 
-    # Show one example timeline plot
-    _, _ = run_trial(improved=True, visualize=True)
+    # ------------------------------------------------------------
+    # Generate one full example run for each mode (with timelines)
+    # ------------------------------------------------------------
+    print("\nGenerating visualization of both modes...")
+    _, baseline_timeline = run_trial(improved=False)
+    _, improved_timeline = run_trial(improved=True)
+
+    # ------------------------------------------------------------
+    # Plot both timelines together for visual comparison
+    # ------------------------------------------------------------
+    plt.figure(figsize=(8, 5))
+    plt.plot(baseline_timeline, label='Baseline', color='tab:red')
+    plt.plot(improved_timeline, label='Improved', color='tab:green')
+    plt.title("Comparison of Foraging Performance")
+    plt.xlabel("Time Steps")
+    plt.ylabel("Resources Collected")
+    plt.legend()
+    plt.grid(True, linestyle='--', alpha=0.6)
+    plt.tight_layout()
+    plt.show()
+
+    # # Show one example timeline plot
+    # _, _ = run_trial(improved=True, visualize=True)
